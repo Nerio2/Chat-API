@@ -1,9 +1,1 @@
-# Created by .ignore support plugin (hsz.mobi)
-.gradle/4.10.2/vcsMetadata-1/
-.gradle/5.0/vcsMetadata-1/
 .idea/
-build/tmp/compileJava/
-src/main/main.iml
-src/main/resources/
-src/test/
-build/classes/
