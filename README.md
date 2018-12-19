@@ -5,61 +5,120 @@ First Collab project!
 
 Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
 
-
-## TODO:
-//for every method: <user_token> as first parametr by POST
-
-### RoomUser:
-#### add new user \<id\> to room:
-  >/room/\<name\>/add?user_id=\<id\>           //user id or login?
+### Room-User:
+#### Add new user to room with POST
+  >/room/\<roomId\>/add/user?userId=\<userId\>
   
-  return:
+  With parameters:  
+  \<roomId\> Long;  
+  \<userId\> Long;
   
-#### select all users from room \<name\>
-  >/room/\<name\>/users
+  Return:  
+  200- If user has been added;  
+  ResourceNotFoundException- If user hasn't been added;
   
-  return:
+#### Select all users from room with GET
+  >/room/\<roomId\>/users
+  
+  With parameters:  
+  \<roomId\> Long;
+  
+  Return:  
+  List\<RoomUser\>- With users;  
+  ResourceNotFoundException- If there is no room with \<roomId\>;
+  
+#### Select all rooms where is user with GET
+  >/user/\<userId\>/rooms
+  
+  With parameters:  
+  \<userId\> Long;
+  
+  Return:  
+  List\<RoomUser\>- With rooms;  
+  ResourceNotFoundException- If there is no user with \<userId\>;
   
 ### Message:
-#### enter to room and get \<limit (default=10)\> messages
-  >/room/<name>?limit=\<limit\>
+#### Create new message with POST
+  >/room/\<roomId\>/message?senderId=\<senderId\>&message=\<message\>
   
-  return:
+  With parameters:  
+  \<roomId\> Long;  
+  \<senderId\> Integer;  
+  \<message\> String;  
   
-#### send message \<msg\> to room \<name\> from user \<id\>
-  >/room/\<name\>?sender_id=\<id\>&message=\<msg\>
+  Return:  
+  200- If message has been deleted;  
+  ResourceNotFoundException- If message hasn't been deleted;
   
-  return:
+#### Delete message with DELETE
+  >/room/\<roomId\>/message?messageId=\<messageId\>
+  
+  With parameters:  
+  \<roomId\> Long;  
+  \<messageId\> Long;  
+  
+  Return:  
+  200- If message has been deleted;  
+  ResourceNotFoundException- If message hasn't been deleted;  
+  
+#### Get messages from room with GET
+  >/room/\<roomId\>?count=\<count\>
+  
+  With parameters:  
+  \<roomId\> Long;  
+  \<count\>(default value= 20) Integer;  
+  
+  Return:  
+  List<Message>;  
+  
+#### Edit message with PUT
+  >/room/\<roomId\>?message=\<Message\>
+  
+  With parameters:  
+  \<roomId\> Long;  
+  \<Message\> Message;  
+  
+  Return:  
+  200- If message has been edited;  
+  ResourceNotFoundException- If message hasn't been edited;  
   
 ### Room:
-#### add new room \<name\> with creator id: \<id\>
-  >/room/new?creator_id=\<id\>&name=\<name\>
+#### Create new room with POST
+  >/room/new?creatorId=\<creatorId\>&name=\<name\>
   
-  return:
+  With parameters:  
+  \<creatorId\> Long;  
+  \<name\> String;  
   
-#### select all rooms
+  Return:  
+  200- If room has been created;  
+  ResourceNotFoundException- If room hasn't been created;  
+  
+#### Select all rooms with GET
   >/rooms
   
-  return:
+  Return:  
+  Iterable<Room> with all rooms;  
   
 ### User:
-#### add new user with: \<login\>, \<password\>, \<email\>
-  >/register?login=\<login\>$password=\<password\>&email=\<email\>
+#### Create new user with POST
+  >/register?email=\<email\>&login=\<login\>&password=\<password\>
   
-  return:
+  With parameters:  
+  \<email\> String;  
+  \<login\> String;  
+  \<password\> String;  
   
-#### login with \<login\>, \<password\>
+  Return:  
+  200- If user has been created;  
+  ResourceNotFoundException- If user hasn't been created;  
+  
+#### Login with POST
   >/login?login=\<login\>&password=\<password\>
   
-  return: user_token
+  With parameters:  
+  \<login\> String;  
+  \<password\> String;  
   
-#### select all users
-  >/users
-  
-  return:
-  
-#### select info from user \<id\>      //or login?
-  >/user/\<id\>
-  
-  return:
-  
+  Return:  
+  User;  
