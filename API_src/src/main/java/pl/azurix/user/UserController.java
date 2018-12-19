@@ -2,30 +2,45 @@ package pl.azurix.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.azurix.room.Room;
 
-import java.util.Optional;
+import java.util.List;
+
+/*
+ *  HOW TO USE:
+ *
+ * -create new user with POST
+ * /register?email=<email>&login=<login>&password=<password>
+ *     <email> String
+ *     <login> String
+ *     <password> String
+ *     return: "200" if user has been created
+ *     ResourceNotFoundException if user hasn't been created
+ *
+ * -login with POST
+ * /login?login=<login>&password=<password>
+ *     <login> String
+ *     <password> String
+ *     return: Object User
+ *
+ */
 
 @RestController
 public class UserController {
-    @Autowired // This means to get the bean called userRepository
-    private UserRepository usersRepository;
+    @Autowired
+    UserRepository userRepository;
 
-    @RequestMapping("/register")
-    @ResponseBody
-    public String register(@RequestParam String action, @RequestParam String login, @RequestParam String password, @RequestParam String email) {
-        if(action.equals("register")) {
-            User usr = new User(login, password, email);
-            usersRepository.save(usr);
-            return "done";
-        }else return "error, no action";
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public User login(@RequestParam String login, @RequestParam String password) {
+        return userRepository.findByLoginAndPassword(login, password).get();
     }
 
-    @RequestMapping("/login")
-    @ResponseBody
-    public Optional<Object> login(@RequestParam String action, @RequestParam String login, @RequestParam String password) {
-        if(action.equals("login")) {
-            Optional op= Optional.of(usersRepository.findById(usersRepository.login(login, password)));
-            return op;
-        }else return Optional.of("error, no action");
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String newUser(@RequestParam String email, @RequestParam String login, @RequestParam String password) {
+        User user = new User(email, login, password);
+        userRepository.save(user);
+        return "200";
     }
 }
