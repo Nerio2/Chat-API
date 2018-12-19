@@ -3,6 +3,8 @@ package pl.azurix.room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import pl.azurix.RoomUser.RoomUser;
+import pl.azurix.RoomUser.RoomUserRepository;
 import pl.azurix.user.UserRepository;
 
 /*
@@ -28,12 +30,17 @@ public class RoomController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    RoomUserRepository roomUserRepository;
+
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/new", method = RequestMethod.POST)
     public String newRoom(@RequestParam Long creatorId, @RequestParam String name) {
         return userRepository.findById(creatorId).map(user -> {
             Room room = new Room(user, name);
             roomRepository.save(room);
+            RoomUser roomUsr=new RoomUser(user,room);
+            roomUserRepository.save(roomUsr);
             return "200";
         }).orElseThrow(() -> new ResourceNotFoundException("user id " + creatorId + " not found"));
     }
