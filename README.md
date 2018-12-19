@@ -51,7 +51,7 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   ResourceNotFoundException- If message hasn't been deleted;
   
 #### Delete message with DELETE
-  >/room/\<roomId\>/message?messageId=\<messageId\>
+  >/room/\<roomId\>?messageId=\<messageId\>
   
   With parameters:  
   \<roomId\> Long;  
