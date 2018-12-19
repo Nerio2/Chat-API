@@ -5,7 +5,7 @@ First Collab project!
 
 Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
 
-### Room-User:
+## Room-User:
 #### Add new user to room with POST
   >/room/\<roomId\>/add/user?userId=\<userId\>
   
@@ -37,7 +37,7 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   List\<RoomUser\>- With rooms;  
   ResourceNotFoundException- If there is no user with \<userId\>;
   
-### Message:
+## Message:
 #### Create new message with POST
   >/room/\<roomId\>/message?senderId=\<senderId\>&message=\<message\>
   
@@ -82,7 +82,7 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   200- If message has been edited;  
   ResourceNotFoundException- If message hasn't been edited;  
   
-### Room:
+## Room:
 #### Create new room with POST
   >/room/new?creatorId=\<creatorId\>&name=\<name\>
   
@@ -100,7 +100,7 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   Return:  
   Iterable<Room> with all rooms;  
   
-### User:
+## User:
 #### Create new user with POST
   >/register?email=\<email\>&login=\<login\>&password=\<password\>
   
