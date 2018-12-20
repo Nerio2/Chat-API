@@ -2,8 +2,6 @@ package pl.azurix.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /*
@@ -39,10 +37,12 @@ public class UserController {
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String newUser(@RequestParam String email, @RequestParam String login, @RequestParam String password) {
-        if(userRepository.findByLogin(login).size()>0)
-            throw new ResourceNotFoundException("this login is already taken");
-        User user = new User(email, login, password);
-        userRepository.save(user);
-        return "200";
+        if(userRepository.findByLogin(login).isPresent())
+            throw new ResourceNotFoundException("user with this login already exists");
+        else {
+            User user = new User(email, login, password);
+            userRepository.save(user);
+            return "200";
+        }
     }
 }
