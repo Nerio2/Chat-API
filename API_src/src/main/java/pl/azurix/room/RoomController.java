@@ -37,11 +37,15 @@ public class RoomController {
     @RequestMapping(value = "/room/new", method = RequestMethod.POST)
     public String newRoom(@RequestParam Long creatorId, @RequestParam String name) {
         return userRepository.findById(creatorId).map(user -> {
-            Room room = new Room(user, name);
-            roomRepository.save(room);
-            RoomUser roomUsr=new RoomUser(user,room);
-            roomUserRepository.save(roomUsr);
-            return "200";
+            if(roomRepository.findByCreatorAndName(user,name).size()>0)
+                throw new ResourceNotFoundException("this room already exists");
+            else {
+                Room room = new Room(user, name);
+                roomRepository.save(room);
+                RoomUser roomUsr = new RoomUser(user, room);
+                roomUserRepository.save(roomUsr);
+                return "200";
+            }
         }).orElseThrow(() -> new ResourceNotFoundException("user id " + creatorId + " not found"));
     }
 

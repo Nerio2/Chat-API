@@ -48,9 +48,13 @@ public class RoomUserController {
     String addNewUser(@RequestParam Long userId, @PathVariable Long roomId) {
         return roomRepository.findById(roomId).map(room -> {
             return userRepository.findById(userId).map(user -> {
-                RoomUser rusr = new RoomUser(user, room);
-                roomUserRepository.save(rusr);
-                return "200";
+                if(roomUserRepository.findByUserAndRoom(user,room).size()>0)
+                    throw new ResourceNotFoundException("this user already exists in that room");
+                else{
+                    RoomUser rusr = new RoomUser(user, room);
+                    roomUserRepository.save(rusr);
+                    return "200";
+                }
             }).orElseThrow(() -> new ResourceNotFoundException("user id " + userId + " not found"));
         }).orElseThrow(() -> new ResourceNotFoundException("room_id " + roomId + " not found"));
     }
