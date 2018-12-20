@@ -31,14 +31,14 @@ public class RoomController {
     private UserRepository userRepository;
 
     @Autowired
-    RoomUserRepository roomUserRepository;
+    private RoomUserRepository roomUserRepository;
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/new", method = RequestMethod.POST)
     public String newRoom(@RequestParam Long creatorId, @RequestParam String name) {
         return userRepository.findById(creatorId).map(user -> {
-            if(roomRepository.findByCreatorAndName(user,name).size()>0)
-                throw new ResourceNotFoundException("this room already exists");
+            if(roomRepository.findByCreatorAndName(user,name).isPresent())
+                throw new ResourceNotFoundException("this user already got a room with name: "+name);
             else {
                 Room room = new Room(user, name);
                 roomRepository.save(room);

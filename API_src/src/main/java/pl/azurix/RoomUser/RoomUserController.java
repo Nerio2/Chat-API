@@ -1,11 +1,9 @@
 package pl.azurix.RoomUser;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import pl.azurix.room.Room;
 import pl.azurix.room.RoomRepository;
 import pl.azurix.user.UserRepository;
 
@@ -14,10 +12,17 @@ import java.util.List;
 /*
  *  HOW TO USE:
  *
- * -add new user to room with POST
+ * -add new user to room by id with POST
  * /room/<roomId>/add/user?userId=<userId>
  *     <roomId> Long
  *     <userId> Long
+ *     return: "200" if user has been added
+ *     ResourceNotFoundException if user hasn't been added
+ *
+ * -add new user to room by login with POST
+ * /room/<roomId>/add?login=<login>
+ *     <roomId> Long
+ *     <login> String
  *     return: "200" if user has been added
  *     ResourceNotFoundException if user hasn't been added
  *
@@ -48,14 +53,30 @@ public class RoomUserController {
     String addNewUser(@RequestParam Long userId, @PathVariable Long roomId) {
         return roomRepository.findById(roomId).map(room -> {
             return userRepository.findById(userId).map(user -> {
-                if(roomUserRepository.findByUserAndRoom(user,room).size()>0)
-                    throw new ResourceNotFoundException("this user already exists in that room");
-                else{
+                if(roomUserRepository.findByRoomAndUser(room,user).size()>0)
+                    throw new ResourceNotFoundException("this user already exists in this room");
+                else {
                     RoomUser rusr = new RoomUser(user, room);
                     roomUserRepository.save(rusr);
                     return "200";
                 }
             }).orElseThrow(() -> new ResourceNotFoundException("user id " + userId + " not found"));
+        }).orElseThrow(() -> new ResourceNotFoundException("room_id " + roomId + " not found"));
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = "/room/{roomId}/add", method = RequestMethod.POST)
+    String addNewUser(@RequestParam String login, @PathVariable Long roomId) {
+        return roomRepository.findById(roomId).map(room -> {
+            return userRepository.findByLogin(login).map(user -> {
+                if(roomUserRepository.findByRoomAndUser(room,user).size()>0)
+                    throw new ResourceNotFoundException("this user already exists in this room");
+                else {
+                    RoomUser rusr = new RoomUser(user, room);
+                    roomUserRepository.save(rusr);
+                    return "200";
+                }
+            }).orElseThrow(() -> new ResourceNotFoundException("user login " + login + " not found"));
         }).orElseThrow(() -> new ResourceNotFoundException("room_id " + roomId + " not found"));
     }
 
