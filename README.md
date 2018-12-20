@@ -6,12 +6,23 @@ First Collab project!
 Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
 
 ## Room-User:
-#### Add new user to room with POST
+#### Add new user to room by id with POST
   >/room/\<roomId\>/add/user?userId=\<userId\>
   
   With parameters:  
   \<roomId\> Long;  
   \<userId\> Long;
+  
+  Return:  
+  200- If user has been added;  
+  ResourceNotFoundException- If user hasn't been added;
+  
+  #### Add new user to room by login with POST
+  >/room/\<roomId\>/add?login=\<login\>
+  
+  With parameters:  
+  \<roomId\> Long;  
+  \<login\> String;
   
   Return:  
   200- If user has been added;  
@@ -122,3 +133,15 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   
   Return:  
   User;  
+
+#### Edit user password with PUT
+  >/user/\<userId\>/password?password=\<password\>&newPassword=\<newPassword\>
+  
+  With parameters:  
+  \<userId\> long;  
+  \<password\> String;  
+  \<newPassword\> String;  
+  
+  Return:  
+  200- If password has been edited;  
+  ResourceNotFoundException- If password hasn't been edited;

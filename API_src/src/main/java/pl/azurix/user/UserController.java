@@ -21,6 +21,13 @@ import org.springframework.web.bind.annotation.*;
  *     <password> String
  *     return: Object User
  *
+ * -change password with PUT
+ * /user/<userId>/password?password=<password>&newPassword=<newPassword>
+ *     <userId> Long
+ *     <password> String
+ *     <newPassword> String
+ *     return: "200" if password has been edited
+ *     ResourceNotFoundException if password hasn't been edited
  */
 
 @RestController
@@ -45,4 +52,19 @@ public class UserController {
             return "200";
         }
     }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = "user/{userId}/password", method = RequestMethod.PUT)
+    public String changePassword(@PathVariable Long userId, @RequestParam String password, @RequestParam String newPassword){
+        return userRepository.findById(userId).map(user -> {
+            if(password.equals(user.getPassword())) {
+                user.setPassword(newPassword);
+                userRepository.save(user);
+                return "200";
+            }
+            else throw new ResourceNotFoundException("wrong password");
+        }).orElseThrow(()->new ResourceNotFoundException("user id "+userId+" not found"));
+
+    }
+
 }
