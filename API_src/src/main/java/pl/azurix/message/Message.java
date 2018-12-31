@@ -28,15 +28,15 @@ public class Message {
     @JoinColumn(name = "sender_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private User senderId;
+    private User sender;
 
     @NotNull
     private String message;
 
     public Message(){}
-    public Message(Room room, @NotNull User senderId, @NotNull String message) {
+    public Message(Room room, @NotNull User sender, @NotNull String message) {
         this.room = room;
-        this.senderId = senderId;
+        this.sender = sender;
         this.message = message;
     }
 
@@ -52,8 +52,8 @@ public class Message {
         this.id = id;
     }
 
-    public void setSenderId(User senderId) {
-        this.senderId = senderId;
+    public void setSender(User sender) {
+        this.sender = sender;
     }
 
     public void setMessage(String message) {
@@ -64,8 +64,8 @@ public class Message {
         return id;
     }
 
-    public User getSenderId() {
-        return senderId;
+    public User getSender() {
+        return sender;
     }
 
     public String getMessage() {
