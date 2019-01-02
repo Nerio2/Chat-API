@@ -14,9 +14,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    public void authWithHttpServletRequest(HttpServletRequest request,String username, String password) {
+        try {
+            request.login(username, password);
+        } catch ( ServletException e) {
+            System.out.println("error with login: "+e);
+        }
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -30,12 +41,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/rooms").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .logout().logoutSuccessUrl("/").permitAll()
-                .and()
-                .formLogin().permitAll();
+                .antMatchers("/auth/login").permitAll()
+                .anyRequest().hasRole("USER")
+                .and().formLogin().loginPage("/auth/login");
 
     }
 }

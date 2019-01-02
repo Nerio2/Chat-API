@@ -2,7 +2,19 @@ package pl.azurix.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.web.bind.annotation.*;
+import pl.azurix.WebSecurityConfig;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Optional;
 
 /*
  *  HOW TO USE:
@@ -35,11 +47,24 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    WebSecurityConfig webSecurityConfig;
+
+    @Autowired
+    HttpServletRequest httpServletRequest;
+
+
     @CrossOrigin(origins = "*")
-    @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/auth/login", method = RequestMethod.GET)
     public User login(@RequestParam String login, @RequestParam String password) {
-        return userRepository.findByLoginAndPassword(login, password).get();
+        Optional<User> usr=userRepository.findByLoginAndPassword(login, password);
+        if(usr!=null) {
+            User user = usr.get();
+            webSecurityConfig.authWithHttpServletRequest(httpServletRequest, "admin", "admin");
+            return user;
+        } else return null;
     }
+
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/auth/register", method = RequestMethod.POST)
