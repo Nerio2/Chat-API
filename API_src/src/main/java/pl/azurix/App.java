@@ -14,3 +14,11 @@ public class App {
     }
 
 }
+
+
+/*
+ * https://dzone.com/articles/secure-spring-rest-with-spring-security-and-oauth2
+ *
+ * TODO: for ex. @Transactional(readOnly = true)
+ * TODO: for ex. @PreAuthorize("hasAuthority('COMPANY_READ') and hasAuthority('DEPARTMENT_READ')")
+ */

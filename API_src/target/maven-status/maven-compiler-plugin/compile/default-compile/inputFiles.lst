@@ -3,13 +3,14 @@ E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\room\RoomRepository.jav
 E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\message\MessageController.java
 E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\RoomUser\RoomUserRepository.java
 E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\user\UserController.java
+E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\SpringWebMvcInitializer.java
 E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\room\Room.java
 E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\room\RoomController.java
-E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\AuthorizationServerConfig.java
 E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\RoomUser\RoomUserController.java
 E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\user\User.java
 E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\WebSecurityConfig.java
 E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\RoomUser\RoomUser.java
 E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\App.java
+E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\Controller.java
 E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\user\UserRepository.java
 E:\GitHub\CHAPI\Chat-API\API_src\src\main\java\pl\azurix\message\Message.java

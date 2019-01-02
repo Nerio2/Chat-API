@@ -36,13 +36,13 @@ public class UserController {
     UserRepository userRepository;
 
     @CrossOrigin(origins = "*")
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
     public User login(@RequestParam String login, @RequestParam String password) {
         return userRepository.findByLoginAndPassword(login, password).get();
     }
 
     @CrossOrigin(origins = "*")
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/auth/register", method = RequestMethod.POST)
     public String newUser(@RequestParam String email, @RequestParam String login, @RequestParam String password) {
         if(userRepository.findByLogin(login).isPresent())
             throw new ResourceNotFoundException("user with this login already exists");
