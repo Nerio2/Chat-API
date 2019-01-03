@@ -21,6 +21,11 @@ import javax.servlet.http.HttpServletRequest;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    public static final String ROOT_PASSWORD="admin";
+    public static final String ROOT_LOGIN="admin";
+    public static final String USER_PASSWORD="user";
+    public static final String USER_LOGIN="password";
+
     public void authWithHttpServletRequest(HttpServletRequest request,String username, String password) {
         try {
             request.login(username, password);
@@ -33,15 +38,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .inMemoryAuthentication()
-                .withUser("user").password("{noop}password").roles("USER")
+                .withUser(USER_LOGIN).password("{noop}"+USER_PASSWORD).roles("USER")
                 .and()
-                .withUser("admin").password("{noop}admin").roles("USER","ADMIN");
+                .withUser(ROOT_LOGIN).password("{noop}"+ROOT_PASSWORD).roles("USER","ROOT");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/auth/login").permitAll()
+                .antMatchers("/auth/register").permitAll()
+                .antMatchers("/root/*").hasRole("ROOT")
                 .anyRequest().hasRole("USER")
                 .and().formLogin().loginPage("/auth/login");
 

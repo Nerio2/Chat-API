@@ -18,7 +18,7 @@ import pl.azurix.user.UserRepository;
  *     ResourceNotFoundException if room hasn't been created
  *
  * -get all rooms with GET
- * /rooms
+ * /root/rooms
  *     return: Iterable<Room> with all rooms
  */
 
@@ -50,7 +50,7 @@ public class RoomController {
     }
 
     @CrossOrigin(origins = "*")
-    @RequestMapping(value = "/rooms", method = RequestMethod.GET)
+    @RequestMapping(value = "/root/rooms", method = RequestMethod.GET)
     public Iterable<Room> getAllRooms() {
         return roomRepository.findAll();
     }

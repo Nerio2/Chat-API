@@ -106,14 +106,20 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   ResourceNotFoundException- If room hasn't been created;  
   
 #### Select all rooms with GET
-  >/rooms
+  >/root/rooms
   
   Return:  
   Iterable<Room> with all rooms;  
   
 ## User:
+#### Select all users with GET
+  >/root/users
+  
+  Return:  
+  Iterable<User> with all users;  
+
 #### Create new user with POST
-  >/register?email=\<email\>&login=\<login\>&password=\<password\>
+  >/auth/register?email=\<email\>&login=\<login\>&password=\<password\>
   
   With parameters:  
   \<email\> String;  
@@ -125,7 +131,7 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   ResourceNotFoundException- If user hasn't been created;  
   
 #### Login with POST
-  >/login?login=\<login\>&password=\<password\>
+  >/auth/login?login=\<login\>&password=\<password\>
   
   With parameters:  
   \<login\> String;  
