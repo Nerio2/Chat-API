@@ -118,7 +118,7 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   Return:  
   Iterable<User> with all users;  
 
-#### Create new user with POST
+#### Create new user with GET
   >/auth/register?email=\<email\>&login=\<login\>&password=\<password\>
   
   With parameters:  
@@ -127,10 +127,10 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   \<password\> String;  
   
   Return:  
-  200- If user has been created;  
-  ResourceNotFoundException- If user hasn't been created;  
+  HttpStatus CREATED (201)- If user has been created;  
+  HttpStatus CONFLICT (409)- If user hasn't been created;  
   
-#### Login with POST
+#### Login with GET
   >/auth/login?login=\<login\>&password=\<password\>
   
   With parameters:  

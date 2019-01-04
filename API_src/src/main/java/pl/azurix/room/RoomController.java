@@ -2,6 +2,7 @@ package pl.azurix.room;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.azurix.RoomUser.RoomUser;
 import pl.azurix.RoomUser.RoomUserRepository;
@@ -35,7 +36,7 @@ public class RoomController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/new", method = RequestMethod.POST)
-    public String newRoom(@RequestParam Long creatorId, @RequestParam String name) {
+    public HttpStatus newRoom(@RequestParam Long creatorId, @RequestParam String name) {
         return userRepository.findById(creatorId).map(user -> {
             if(roomRepository.findByCreatorAndName(user,name).isPresent())
                 throw new ResourceNotFoundException("this user already got a room with name: "+name);
@@ -44,9 +45,9 @@ public class RoomController {
                 roomRepository.save(room);
                 RoomUser roomUsr = new RoomUser(user, room);
                 roomUserRepository.save(roomUsr);
-                return "200";
+                return HttpStatus.OK;
             }
-        }).orElseThrow(() -> new ResourceNotFoundException("user id " + creatorId + " not found"));
+        }).orElse(HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")

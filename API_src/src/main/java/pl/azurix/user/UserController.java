@@ -2,6 +2,8 @@ package pl.azurix.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.azurix.WebSecurityConfig;
 
@@ -71,26 +73,26 @@ public class UserController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/auth/register", method = RequestMethod.GET)
-    public String newUser(@RequestParam String email, @RequestParam String login, @RequestParam String password) {
+    public HttpStatus newUser(@RequestParam String email, @RequestParam String login, @RequestParam String password) {
         if (userRepository.findByLogin(login).isPresent())
-            throw new ResourceNotFoundException("user with this login already exists");
+            return HttpStatus.BAD_REQUEST;
         else {
             User user = new User(email, login, password, 1);
             userRepository.save(user);
-            return "200";
+            return HttpStatus.CREATED;
         }
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "user/{userId}/password", method = RequestMethod.PUT)
-    public String changePassword(@PathVariable Long userId, @RequestParam String password, @RequestParam String newPassword) {
+    public HttpStatus changePassword(@PathVariable Long userId, @RequestParam String password, @RequestParam String newPassword) {
         return userRepository.findById(userId).map(user -> {
             if (password.equals(user.getPassword())) {
                 user.setPassword(newPassword);
                 userRepository.save(user);
-                return "200";
-            } else throw new ResourceNotFoundException("wrong password");
-        }).orElseThrow(() -> new ResourceNotFoundException("user id " + userId + " not found"));
+                return HttpStatus.OK;
+            } else return HttpStatus.BAD_REQUEST;
+        }).orElse(HttpStatus.BAD_REQUEST);
 
     }
 

@@ -3,6 +3,7 @@ package pl.azurix.message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.azurix.room.RoomRepository;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -55,14 +56,14 @@ public class MessageController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/{roomId}/message", method = RequestMethod.POST)
-    public String newMessage(@PathVariable(value = "roomId") Long roomId, @RequestParam Long senderId, @RequestParam String message) {
+    public HttpStatus newMessage(@PathVariable(value = "roomId") Long roomId, @RequestParam Long senderId, @RequestParam String message) {
         return roomRepository.findById(roomId).map(room -> {
                 return userRepository.findById(senderId).map(user -> {
                     Message msg = new Message(room, user, message);
                     messageRepository.save(msg);
-                    return "200";
-            }).orElseThrow(() -> new ResourceNotFoundException("sender id " + senderId + " not found"));
-        }).orElseThrow(() -> new ResourceNotFoundException("room id " + roomId + " not found"));
+                    return HttpStatus.OK;
+            }).orElse(HttpStatus.BAD_REQUEST);
+        }).orElse(HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")
@@ -74,26 +75,26 @@ public class MessageController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/{roomId}", method = RequestMethod.DELETE)
-    public String deleteMessage(@PathVariable("roomId") Long roomId, @RequestParam Long messageId){
+    public HttpStatus deleteMessage(@PathVariable("roomId") Long roomId, @RequestParam Long messageId){
         return roomRepository.findById(roomId).map(room -> {
                 return messageRepository.findById(messageId).map(message -> {
                     messageRepository.delete(message);
-                    return "200";
-            }).orElseThrow(() -> new ResourceNotFoundException("message id " + messageId + " not found"));
-        }).orElseThrow(() -> new ResourceNotFoundException("room id " + roomId + " not found"));
+                    return HttpStatus.OK;
+            }).orElse(HttpStatus.BAD_REQUEST);
+        }).orElse(HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/{roomId}", method = RequestMethod.PUT)
-    public String editMessage(@PathVariable("roomId") Long roomId, @RequestBody Message message){
+    public HttpStatus editMessage(@PathVariable("roomId") Long roomId, @RequestBody Message message){
         Long messageId=message.getId();
         return roomRepository.findById(roomId).map(room -> {
                 return messageRepository.findById(messageId).map(messageIn -> {
                     messageIn.setMessage(message.getMessage());
                     messageRepository.save(messageIn);
-                    return "200";
-            }).orElseThrow(() -> new ResourceNotFoundException("message id " + messageId + " not found"));
-        }).orElseThrow(() -> new ResourceNotFoundException("room id " + roomId + " not found"));
+                    return HttpStatus.OK;
+            }).orElse(HttpStatus.BAD_REQUEST);
+        }).orElse(HttpStatus.BAD_REQUEST);
     }
 }
 /*

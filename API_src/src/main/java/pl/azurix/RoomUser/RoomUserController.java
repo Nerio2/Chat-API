@@ -2,6 +2,7 @@ package pl.azurix.RoomUser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import pl.azurix.room.RoomRepository;
@@ -50,7 +51,7 @@ public class RoomUserController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/{roomId}/add/user", method = RequestMethod.POST)
-    String addNewUser(@RequestParam Long userId, @PathVariable Long roomId) {
+    HttpStatus addNewUser(@RequestParam Long userId, @PathVariable Long roomId) {
         return roomRepository.findById(roomId).map(room -> {
             return userRepository.findById(userId).map(user -> {
                 if(roomUserRepository.findByRoomAndUser(room,user).size()>0)
@@ -58,15 +59,15 @@ public class RoomUserController {
                 else {
                     RoomUser rusr = new RoomUser(user, room);
                     roomUserRepository.save(rusr);
-                    return "200";
+                    return HttpStatus.OK;
                 }
-            }).orElseThrow(() -> new ResourceNotFoundException("user id " + userId + " not found"));
-        }).orElseThrow(() -> new ResourceNotFoundException("room_id " + roomId + " not found"));
+            }).orElse(HttpStatus.BAD_REQUEST);
+        }).orElse(HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/{roomId}/add", method = RequestMethod.POST)
-    String addNewUser(@RequestParam String login, @PathVariable Long roomId) {
+    HttpStatus addNewUser(@RequestParam String login, @PathVariable Long roomId) {
         return roomRepository.findById(roomId).map(room -> {
             return userRepository.findByLogin(login).map(user -> {
                 if(roomUserRepository.findByRoomAndUser(room,user).size()>0)
@@ -74,10 +75,10 @@ public class RoomUserController {
                 else {
                     RoomUser rusr = new RoomUser(user, room);
                     roomUserRepository.save(rusr);
-                    return "200";
+                    return HttpStatus.OK;
                 }
-            }).orElseThrow(() -> new ResourceNotFoundException("user login " + login + " not found"));
-        }).orElseThrow(() -> new ResourceNotFoundException("room_id " + roomId + " not found"));
+            }).orElse(HttpStatus.BAD_REQUEST);
+        }).orElse(HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")
