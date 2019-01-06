@@ -15,12 +15,14 @@ import pl.azurix.user.UserRepository;
  * /room/new?creatorId=<creatorId>&name=<name>
  *     <creatorId> Long
  *     <name> String
- *     return: "200" room has been created
- *     ResourceNotFoundException if room hasn't been created
+ *     return:
+ *     HttpStatus.OK if room has been created
+ *     HttpStatus.BAD_REQUEST if room hasn't been created
  *
  * -get all rooms with GET
  * /root/rooms
- *     return: Iterable<Room> with all rooms
+ *     return:
+ *     Iterable<Room> with all rooms
  */
 
 @RestController
@@ -39,7 +41,7 @@ public class RoomController {
     public HttpStatus newRoom(@RequestParam Long creatorId, @RequestParam String name) {
         return userRepository.findById(creatorId).map(user -> {
             if(roomRepository.findByCreatorAndName(user,name).isPresent())
-                throw new ResourceNotFoundException("this user already got a room with name: "+name);
+                throw new ResourceNotFoundException("this user already got a room with name: "+name);   //jaki HttpStatus tutaj
             else {
                 Room room = new Room(user, name);
                 roomRepository.save(room);

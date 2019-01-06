@@ -1,9 +1,7 @@
 package pl.azurix.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.azurix.WebSecurityConfig;
 
@@ -13,27 +11,35 @@ import java.util.Optional;
 /*
  *  HOW TO USE:
  *
- * -create new user with POST
+ * -create new user with GET
  * /auth/register?email=<email>&login=<login>&password=<password>
  *     <email> String
  *     <login> String
  *     <password> String
- *     return: "200" if user has been created
- *     ResourceNotFoundException if user hasn't been created
+ *     return:
+ *    HttpStatus.CREATED if user has been created
+ *     HttpStatus.BAD_REQUEST if user hasn't been created
  *
- * -login with POST
+ * -login with GET
  * /auth/login?login=<login>&password=<password>
  *     <login> String
  *     <password> String
- *     return: Object User
+ *     return:
+ *     Object User
  *
  * -change password with PUT
  * /user/<userId>/password?password=<password>&newPassword=<newPassword>
  *     <userId> Long
  *     <password> String
  *     <newPassword> String
- *     return: "200" if password has been edited
- *     ResourceNotFoundException if password hasn't been edited
+ *     return:
+ *     HttpStatus.OK if password has been edited
+ *     HttpStatus.BAD_REQUEST if password hasn't been edited
+ *
+ * -Get all users with GET
+ * /root/users
+ *     return:
+ *     Iterable<User>
  */
 
 @RestController
@@ -49,23 +55,24 @@ public class UserController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/root/users", method = RequestMethod.GET)
-    public Iterable<User> getUsers(){return userRepository.findAll();}
+    public Iterable<User> getUsers() {
+        return userRepository.findAll();
+    }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/auth/login", method = RequestMethod.GET)
     public User login(@RequestParam String login, @RequestParam String password) {
         Optional<User> usr = userRepository.findByLoginAndPassword(login, password);
-        if (usr != null) {
+        if (usr.isPresent()) {
             User user = usr.get();
             switch ( user.getAuthLvl() ) {
-                case 0:
+                case 0: //ROOT
                     webSecurityConfig.authWithHttpServletRequest(httpServletRequest, WebSecurityConfig.ROOT_LOGIN, WebSecurityConfig.ROOT_PASSWORD);
                     break;
-                case 1:
+                case 1: //USER
                     webSecurityConfig.authWithHttpServletRequest(httpServletRequest, WebSecurityConfig.USER_LOGIN, WebSecurityConfig.USER_PASSWORD);
                     break;
             }
-
             return user;
         } else return null;
     }

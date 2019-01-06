@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.azurix.room.RoomRepository;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import pl.azurix.user.UserRepository;
 
 import java.util.*;
@@ -19,28 +18,32 @@ import java.util.*;
  *     <roomId> Long
  *     <senderId> Integer
  *     <message> String
- *     return: "200" if message has been created
- *     ResourceNotFoundException if message hasn't been created
+ *     return:
+ *     HttpStatus.CREATED if message has been created
+ *     HttpStatus.BAD_REQUEST if message hasn't been created
  *
  * -delete message with DELETE
  * /room/<roomId>/message?messageId=<messageId>
  *     <roomId> Long
  *     <messageId> Long
- *     return "200" if message has been deleted
- *     ResourceNotFoundException if message hasn't been deleted
+ *     return:
+ *     HttpStatus.OK if message has been deleted
+ *     HttpStatus.BAD_REQUEST if message hasn't been deleted
  *
  * -get messages from room with GET
  * /room/<roomId>?requestCount=<requestCount>
  *     <roomId> Long
- *     <requestCount> Integer (default value= 0)    for val=0- first 10 messages, val=1- messages from 11 to 20, val=3- 21-30
- *     return: List<Message>
+ *     <requestCount> Integer (default value= 20)
+ *     return:
+ *     List<Message>
  *
  * -edit message with PUT
  * /room/<roomId>?message=<Message>
  *     <roomId> Long
  *     <Message> Message
- *     return: "200" if message has been edited
- *     ResourceNotFoundException if message hasn't been edited
+ *     return:
+  *    HttpStatus.OK if message has been edited
+ *     HttpStatus.BAD_REQUEST if message hasn't been edited
  */
 
 @RestController
@@ -61,7 +64,7 @@ public class MessageController {
                 return userRepository.findById(senderId).map(user -> {
                     Message msg = new Message(room, user, message);
                     messageRepository.save(msg);
-                    return HttpStatus.OK;
+                    return HttpStatus.CREATED;
             }).orElse(HttpStatus.BAD_REQUEST);
         }).orElse(HttpStatus.BAD_REQUEST);
     }
