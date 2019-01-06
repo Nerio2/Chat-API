@@ -2,6 +2,7 @@ package pl.azurix.room;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.azurix.RoomUser.RoomUser;
 import pl.azurix.RoomUser.RoomUserRepository;
@@ -14,12 +15,14 @@ import pl.azurix.user.UserRepository;
  * /room/new?creatorId=<creatorId>&name=<name>
  *     <creatorId> Long
  *     <name> String
- *     return: "200" room has been created
- *     ResourceNotFoundException if room hasn't been created
+ *     return:
+ *     HttpStatus.OK if room has been created
+ *     HttpStatus.BAD_REQUEST if room hasn't been created
  *
  * -get all rooms with GET
- * /rooms
- *     return: Iterable<Room> with all rooms
+ * /root/rooms
+ *     return:
+ *     Iterable<Room> with all rooms
  */
 
 @RestController
@@ -35,22 +38,22 @@ public class RoomController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/new", method = RequestMethod.POST)
-    public String newRoom(@RequestParam Long creatorId, @RequestParam String name) {
+    public HttpStatus newRoom(@RequestParam Long creatorId, @RequestParam String name) {
         return userRepository.findById(creatorId).map(user -> {
             if(roomRepository.findByCreatorAndName(user,name).isPresent())
-                throw new ResourceNotFoundException("this user already got a room with name: "+name);
+                throw new ResourceNotFoundException("this user already got a room with name: "+name);   //jaki HttpStatus tutaj
             else {
                 Room room = new Room(user, name);
                 roomRepository.save(room);
                 RoomUser roomUsr = new RoomUser(user, room);
                 roomUserRepository.save(roomUsr);
-                return "200";
+                return HttpStatus.OK;
             }
-        }).orElseThrow(() -> new ResourceNotFoundException("user id " + creatorId + " not found"));
+        }).orElse(HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")
-    @RequestMapping(value = "/rooms", method = RequestMethod.GET)
+    @RequestMapping(value = "/root/rooms", method = RequestMethod.GET)
     public Iterable<Room> getAllRooms() {
         return roomRepository.findAll();
     }

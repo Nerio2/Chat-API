@@ -2,10 +2,8 @@ package pl.azurix.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.logging.Handler;
 
 @Table(name = "users")
 @Entity
@@ -19,16 +17,21 @@ public class User {
 
     private String login;
 
+    private int authLvl;
+    //0- root
+    //1- user
+
     @JsonIgnore
     private String password;
 
     public User() {
     }
 
-    public User(String email, String login, String password) {
+    public User(String email, String login, String password, int authLvl) {
         this.email = email;
         this.login = login;
         this.password = password;
+        this.authLvl=authLvl;
     }
 
     public void setId(Long id) {
@@ -61,5 +64,13 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public int getAuthLvl() {
+        return authLvl;
+    }
+
+    public void setAuthLvl(int authLvl) {
+        this.authLvl = authLvl;
     }
 }

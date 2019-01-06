@@ -14,8 +14,8 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   \<userId\> Long;
   
   Return:  
-  200- If user has been added;  
-  ResourceNotFoundException- If user hasn't been added;
+  HttpStatus OK (200)- If user has been added;  
+  HttpStatus BAD_REQUEST (400)- If user hasn't been added;
   
   #### Add new user to room by login with POST
   >/room/\<roomId\>/add?login=\<login\>
@@ -25,8 +25,8 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   \<login\> String;
   
   Return:  
-  200- If user has been added;  
-  ResourceNotFoundException- If user hasn't been added;
+  HttpStatus OK (200)- If user has been added;  
+  HttpStatus BAD_REQUEST (400)- If user hasn't been added;
   
 #### Select all users from room with GET
   >/room/\<roomId\>/users
@@ -35,8 +35,7 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   \<roomId\> Long;
   
   Return:  
-  List\<RoomUser\>- With users;  
-  ResourceNotFoundException- If there is no room with \<roomId\>;
+  Optional\<List\<RoomUser\>\>;  
   
 #### Select all rooms where is user with GET
   >/user/\<userId\>/rooms
@@ -45,8 +44,7 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   \<userId\> Long;
   
   Return:  
-  List\<RoomUser\>- With rooms;  
-  ResourceNotFoundException- If there is no user with \<userId\>;
+  Optional\<List\<RoomUser\>\>;  
   
 ## Message:
 #### Create new message with POST
@@ -58,8 +56,8 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   \<message\> String;  
   
   Return:  
-  200- If message has been deleted;  
-  ResourceNotFoundException- If message hasn't been deleted;
+  HttpStatus CREATED (201)- If message has been created;  
+  HttpStatus BAD_REQUEST (400)- If message hasn't been created;  
   
 #### Delete message with DELETE
   >/room/\<roomId\>?messageId=\<messageId\>
@@ -69,8 +67,8 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   \<messageId\> Long;  
   
   Return:  
-  200- If message has been deleted;  
-  ResourceNotFoundException- If message hasn't been deleted;  
+  HttpStatus OK (200)- If message has been deleted;  
+  HttpStatus BAD_REQUEST (400)- If message hasn't been deleted;  
   
 #### Get messages from room with GET
   >/room/\<roomId\>?count=\<count\>
@@ -90,8 +88,8 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   \<Message\> Message;  
   
   Return:  
-  200- If message has been edited;  
-  ResourceNotFoundException- If message hasn't been edited;  
+  HttpStatus OK (200)- If message has been edited;  
+  HttpStatus BAD_REQUEST (400)- If message hasn't been edited;  
   
 ## Room:
 #### Create new room with POST
@@ -102,18 +100,24 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   \<name\> String;  
   
   Return:  
-  200- If room has been created;  
-  ResourceNotFoundException- If room hasn't been created;  
+  HttpStatus OK (200)- If room has been created;  
+  HttpStatus BAD_REQUEST (400)- If room hasn't been created;  
   
 #### Select all rooms with GET
-  >/rooms
+  >/root/rooms
   
   Return:  
   Iterable<Room> with all rooms;  
   
 ## User:
-#### Create new user with POST
-  >/register?email=\<email\>&login=\<login\>&password=\<password\>
+#### Select all users with GET
+  >/root/users
+  
+  Return:  
+  Iterable<User> with all users;  
+
+#### Create new user with GET
+  >/auth/register?email=\<email\>&login=\<login\>&password=\<password\>
   
   With parameters:  
   \<email\> String;  
@@ -121,11 +125,11 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   \<password\> String;  
   
   Return:  
-  200- If user has been created;  
-  ResourceNotFoundException- If user hasn't been created;  
+  HttpStatus CREATED (201)- If user has been created;  
+  HttpStatus BAD_REQUEST (400)- If user hasn't been created;  
   
-#### Login with POST
-  >/login?login=\<login\>&password=\<password\>
+#### Login with GET
+  >/auth/login?login=\<login\>&password=\<password\>
   
   With parameters:  
   \<login\> String;  
@@ -143,5 +147,5 @@ Meistertask: https://www.meistertask.com/app/project/rontVLI6/project-collab
   \<newPassword\> String;  
   
   Return:  
-  200- If password has been edited;  
-  ResourceNotFoundException- If password hasn't been edited;
+  HttpStatus OK (200)- If password has been edited;  
+  HttpStatus BAD_REQUEST (400)- If password hasn't been edited;

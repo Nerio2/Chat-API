@@ -6,7 +6,8 @@ pl\azurix\room\RoomRepository.class
 pl\azurix\RoomUser\RoomUser.class
 pl\azurix\user\UserRepository.class
 pl\azurix\user\UserController.class
-pl\azurix\AuthorizationServerConfig.class
+pl\azurix\SpringWebMvcInitializer.class
+pl\azurix\Controller.class
 pl\azurix\WebSecurityConfig.class
 pl\azurix\RoomUser\RoomUserRepository.class
 pl\azurix\App.class
