@@ -1,6 +1,7 @@
 pl\azurix\user\User.class
 pl\azurix\room\RoomController.class
 pl\azurix\message\MessageController.class
+pl\azurix\SimpleCorsFilter.class
 pl\azurix\room\Room.class
 pl\azurix\room\RoomRepository.class
 pl\azurix\RoomUser\RoomUser.class
