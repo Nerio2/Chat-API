@@ -36,7 +36,7 @@ public class RoomController {
     @Autowired
     private RoomUserRepository roomUserRepository;
 
-    @CrossOrigin(origins = "*")
+    //@CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/new", method = RequestMethod.POST)
     public HttpStatus newRoom(@RequestParam Long creatorId, @RequestParam String name) {
         return userRepository.findById(creatorId).map(user -> {
@@ -52,7 +52,7 @@ public class RoomController {
         }).orElse(HttpStatus.BAD_REQUEST);
     }
 
-    @CrossOrigin(origins = "*")
+    //@CrossOrigin(origins = "*")
     @RequestMapping(value = "/root/rooms", method = RequestMethod.GET)
     public Iterable<Room> getAllRooms() {
         return roomRepository.findAll();

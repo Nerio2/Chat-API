@@ -14,7 +14,7 @@ import java.io.IOException;
 @org.springframework.stereotype.Controller
 public class Controller {
 
-    @CrossOrigin(origins = "*")
+    //@CrossOrigin(origins = "*")
     @RequestMapping("/logout")
     public void exit(HttpServletRequest request, HttpServletResponse response) {
         // token can be revoked here if needed

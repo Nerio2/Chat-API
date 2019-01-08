@@ -57,7 +57,7 @@ public class MessageController {
     @Autowired
     private UserRepository userRepository;
 
-    @CrossOrigin(origins = "*")
+    //@CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/{roomId}/message", method = RequestMethod.POST)
     public HttpStatus newMessage(@PathVariable(value = "roomId") Long roomId, @RequestParam Long senderId, @RequestParam String message) {
         return roomRepository.findById(roomId).map(room -> {
@@ -69,14 +69,14 @@ public class MessageController {
         }).orElse(HttpStatus.BAD_REQUEST);
     }
 
-    @CrossOrigin(origins = "*")
+    //@CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/{roomId}", method = RequestMethod.GET)
     public List<Message> getMessages(@PathVariable("roomId") Long roomId, @RequestParam(value = "count", defaultValue = "20") Integer count) {
         Pageable limit = PageRequest.of(0, count);
         return messageRepository.findByRoomIdOrderByIdDesc(roomId, limit);
     }
 
-    @CrossOrigin(origins = "*")
+   // @CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/{roomId}", method = RequestMethod.DELETE)
     public HttpStatus deleteMessage(@PathVariable("roomId") Long roomId, @RequestParam Long messageId){
         return roomRepository.findById(roomId).map(room -> {
@@ -87,7 +87,7 @@ public class MessageController {
         }).orElse(HttpStatus.BAD_REQUEST);
     }
 
-    @CrossOrigin(origins = "*")
+    //@CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/{roomId}", method = RequestMethod.PUT)
     public HttpStatus editMessage(@PathVariable("roomId") Long roomId, @RequestBody Message message){
         Long messageId=message.getId();

@@ -9,10 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class SimpleCorsFilter implements Filter {
+//@Component
+//@Order(Ordered.HIGHEST_PRECEDENCE)
+public class SimpleCorsFilter{ //implements Filter {
 
+    /*
     public SimpleCorsFilter() {
     }
 
@@ -39,4 +40,5 @@ public class SimpleCorsFilter implements Filter {
     @Override
     public void destroy() {
     }
+    */
 }

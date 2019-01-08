@@ -52,7 +52,7 @@ public class RoomUserController {
     @Autowired
     UserRepository userRepository;
 
-    @CrossOrigin(origins = "*")
+    //@CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/{roomId}/add/user", method = RequestMethod.POST)
     HttpStatus addNewUser(@RequestParam Long userId, @PathVariable Long roomId) {
         return roomRepository.findById(roomId).map(room -> {
@@ -68,7 +68,7 @@ public class RoomUserController {
         }).orElse(HttpStatus.BAD_REQUEST);
     }
 
-    @CrossOrigin(origins = "*")
+    //@CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/{roomId}/add", method = RequestMethod.POST)
     HttpStatus addNewUser(@RequestParam String login, @PathVariable Long roomId) {
         return roomRepository.findById(roomId).map(room -> {
@@ -84,13 +84,13 @@ public class RoomUserController {
         }).orElse(HttpStatus.BAD_REQUEST);
     }
 
-    @CrossOrigin(origins = "*")
+    //@CrossOrigin(origins = "*")
     @RequestMapping(value = "/room/{roomId}/users", method = RequestMethod.GET)
     Optional<List<RoomUser>> selectUsers(@PathVariable Long roomId) {
         return roomRepository.findById(roomId).map(room -> roomUserRepository.findByRoom(room));
     }
 
-    @CrossOrigin(origins = "*")
+    //@CrossOrigin(origins = "*")
     @RequestMapping(value = "/user/{userId}/rooms", method = RequestMethod.GET)
     Optional<List<RoomUser>> getRooms(@PathVariable Long userId) {
         return userRepository.findById(userId).map(user -> roomUserRepository.findByUser(user));
