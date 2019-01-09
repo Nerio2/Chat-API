@@ -90,7 +90,7 @@ public class RoomUserController {
         return roomRepository.findById(roomId).map(room -> roomUserRepository.findByRoom(room));
     }
 
-    @CrossOrigin(origins = "http://localhost:8080/" )
+    //@CrossOrigin(origins = "http://localhost:8080/" )
     @RequestMapping(value = "/user/{userId}/rooms", method = RequestMethod.GET)
     Optional<List<RoomUser>> getRooms(@PathVariable Long userId) {
         return userRepository.findById(userId).map(user -> roomUserRepository.findByUser(user));
