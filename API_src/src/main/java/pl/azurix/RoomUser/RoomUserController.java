@@ -6,8 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import pl.azurix.room.RoomRepository;
+import pl.azurix.user.User;
 import pl.azurix.user.UserRepository;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,8 +86,14 @@ public class RoomUserController {
     }
 
     @RequestMapping(value = "/room/{roomId}/users", method = RequestMethod.GET)
-    Optional<List<RoomUser>> selectUsers(@PathVariable Long roomId) {
-        return roomRepository.findById(roomId).map(room -> roomUserRepository.findByRoom(room));
+    List<Optional<User>> selectUsers(@PathVariable Long roomId) {
+        return roomRepository.findById(roomId).map(room -> {
+            List<BigInteger> ids=roomUserRepository.getUsersFromRoom(room);
+            List<Optional<User>> users=new ArrayList<>();
+            for(BigInteger id : ids)
+                users.add(userRepository.findById(id.longValue()));
+            return users;
+        }).get();
     }
 
     @RequestMapping(value = "/user/{userId}/rooms", method = RequestMethod.GET)
