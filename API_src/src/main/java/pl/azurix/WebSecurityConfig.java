@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
        // http.addFilterBefore(new SimpleCorsFilter(), BasicAuthenticationFilter.class);
-        http.cors().and().authorizeRequests()
+        http.authorizeRequests()
                 .antMatchers("/oauth2/*").permitAll()
                 .antMatchers(HttpMethod.OPTIONS,"/oauth/token").permitAll()
                 .antMatchers("/auth/*").permitAll()
