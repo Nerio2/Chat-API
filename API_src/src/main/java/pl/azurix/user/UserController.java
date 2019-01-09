@@ -53,13 +53,11 @@ public class UserController {
     @Autowired
     HttpServletRequest httpServletRequest;
 
-    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/root/users", method = RequestMethod.GET)
     public Iterable<User> getUsers() {
         return userRepository.findAll();
     }
 
-    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/auth/login", method = RequestMethod.GET)
     public User login(@RequestParam String login, @RequestParam String password) {
         Optional<User> usr = userRepository.findByLoginAndPassword(login, password);
@@ -78,7 +76,6 @@ public class UserController {
     }
 
 
-    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/auth/register", method = RequestMethod.GET)
     public HttpStatus newUser(@RequestParam String email, @RequestParam String login, @RequestParam String password) {
         if (userRepository.findByLogin(login).isPresent())
@@ -90,7 +87,6 @@ public class UserController {
         }
     }
 
-    @CrossOrigin(origins = "*")
     @RequestMapping(value = "user/{userId}/password", method = RequestMethod.PUT)
     public HttpStatus changePassword(@PathVariable Long userId, @RequestParam String password, @RequestParam String newPassword) {
         return userRepository.findById(userId).map(user -> {
