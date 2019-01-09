@@ -59,7 +59,7 @@ public class UserController {
         return userRepository.findAll();
     }
 
-    //@CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/auth/login", method = RequestMethod.GET)
     public User login(@RequestParam String login, @RequestParam String password) {
         Optional<User> usr = userRepository.findByLoginAndPassword(login, password);
