@@ -72,9 +72,11 @@ public class UserController {
                     break;
             }
             return user;
-        } else return null;
+        } else throw new UnauthException();
     }
 
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public class UnauthException extends RuntimeException {}
 
     @RequestMapping(value = "/auth/register", method = RequestMethod.GET)
     public HttpStatus newUser(@RequestParam String email, @RequestParam String login, @RequestParam String password) {

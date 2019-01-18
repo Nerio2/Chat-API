@@ -1,4 +1,5 @@
 pl\azurix\user\User.class
+pl\azurix\user\UserController$UnauthException.class
 pl\azurix\room\RoomController.class
 pl\azurix\message\MessageController.class
 pl\azurix\SimpleCorsFilter.class
