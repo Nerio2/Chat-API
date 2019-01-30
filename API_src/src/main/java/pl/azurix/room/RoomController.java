@@ -51,6 +51,24 @@ public class RoomController {
         }).orElse(HttpStatus.BAD_REQUEST);
     }
 
+    @RequestMapping(value = "/room", method=RequestMethod.PUT)
+    public HttpStatus editRoom(@RequestBody Room room){
+        return roomRepository.findById(room.getId()).map(room1 -> {
+            room1.setName(room.getName());
+            room1.setCreator(room.getCreator());
+            roomRepository.save(room1);
+            return HttpStatus.OK;
+        }).orElse(HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/room", method=RequestMethod.DELETE)
+    public HttpStatus deleteRoom(@RequestParam long id){
+        return roomRepository.findById(id).map(room -> {
+            roomRepository.delete(room);
+            return HttpStatus.OK;
+        }).orElse(HttpStatus.BAD_REQUEST);
+    }
+
     @RequestMapping(value = "/root/rooms", method = RequestMethod.GET)
     public Iterable<Room> getAllRooms() {
         return roomRepository.findAll();

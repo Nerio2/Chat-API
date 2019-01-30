@@ -1,5 +1,0 @@
-security:
-  oauth2:
-    client:
-      client-id: 1
-      client-secret: nope
